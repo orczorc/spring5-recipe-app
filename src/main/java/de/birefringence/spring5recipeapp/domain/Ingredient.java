@@ -3,6 +3,7 @@ package de.birefringence.spring5recipeapp.domain;
 import javax.persistence.*;
 import java.math.BigDecimal;
 
+@Entity
 public class Ingredient {
 
     @Id
