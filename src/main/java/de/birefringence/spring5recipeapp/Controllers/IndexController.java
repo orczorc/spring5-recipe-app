@@ -5,12 +5,13 @@ import de.birefringence.spring5recipeapp.domain.UnitOfMeasure;
 import de.birefringence.spring5recipeapp.repositories.CategoryRepository;
 import de.birefringence.spring5recipeapp.repositories.UnitOfMeasureRepository;
 import de.birefringence.spring5recipeapp.service.RecipeService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Optional;
-
+@Slf4j
 @Controller
 public class IndexController {
 
@@ -38,6 +39,7 @@ public class IndexController {
         System.out.println("UOM ID is: " + unitOfMeasureOptional.get().getId());
         */
 
+       log.debug("Inside the Controller class.");
        model.addAttribute("recipes", recipeService.getRecipes());
         return "index";
     }
