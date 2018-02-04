@@ -1,5 +1,7 @@
 package de.birefringence.spring5recipeapp.service;
 
+import de.birefringence.spring5recipeapp.converters.RecipeCommandToRecipe;
+import de.birefringence.spring5recipeapp.converters.RecipeToRecipeCommand;
 import de.birefringence.spring5recipeapp.domain.Recipe;
 import de.birefringence.spring5recipeapp.repositories.RecipeRepository;
 import org.junit.Before;
@@ -18,16 +20,22 @@ import static org.mockito.Mockito.*;
 public class RecipeServiceImplTest {
 
 
-    RecipeServiceImpl recipeService;
+    private RecipeServiceImpl recipeService;
 
     @Mock
-    RecipeRepository recipeRepository;
+    private RecipeRepository recipeRepository;
+
+    @Mock
+    private RecipeCommandToRecipe recipeCommandToRecipe;
+
+    @Mock
+    private RecipeToRecipeCommand recipeToRecipeCommand;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        recipeService = new RecipeServiceImpl(recipeRepository);
+        recipeService = new RecipeServiceImpl(recipeRepository, recipeCommandToRecipe, recipeToRecipeCommand);
     }
 
     @Test
@@ -49,7 +57,7 @@ public class RecipeServiceImplTest {
     public void getRecipes() throws Exception {
 
         Recipe recipe = new Recipe();
-        HashSet recipeData = new HashSet();
+        HashSet<Recipe> recipeData = new HashSet<>();
         recipeData.add(recipe);
 
         when(recipeService.getRecipes()).thenReturn(recipeData);
@@ -58,5 +66,19 @@ public class RecipeServiceImplTest {
 
         assertEquals(recipes.size(),1);
         verify(recipeRepository, times(1)).findAll();
+    }
+
+    @Test
+    public void getRecipesTest() throws Exception {
+        Recipe recipe = new Recipe();
+        HashSet<Recipe> recipesData = new HashSet<>();
+        recipesData.add(recipe);
+
+        when(recipeService.getRecipes()).thenReturn(recipesData);
+        Set<Recipe> recipes = recipeService.getRecipes();
+
+        assertEquals(recipes.size(),1);
+        verify(recipeRepository,times(1)).findAll();
+        verify(recipeRepository,never()).findById(anyLong());
     }
 }
